@@ -4,6 +4,7 @@ const https = require('https');
 module.exports = sendEmail;
 
 async function sendEmail({ to, subject, html, from }) {
+    console.log(`📧 Attempting to send email to: ${to}`);
     const data = JSON.stringify({
         sender: { email: from || process.env.EMAIL_FROM },
         to: [{ email: to }],
@@ -27,8 +28,10 @@ async function sendEmail({ to, subject, html, from }) {
             let body = '';
             res.on('data', (chunk) => body += chunk);
             res.on('end', () => {
+                console.log(`📡 Brevo API Response Status: ${res.statusCode}`);
                 if (res.statusCode >= 200 && res.statusCode < 300) {
                     console.log('✅ Email sent successfully via Brevo API');
+                    console.log(`📄 Response: ${body}`);
                     resolve(body);
                 } else {
                     console.error(`❌ Brevo API error (Status ${res.statusCode}): ${body}`);
@@ -37,7 +40,10 @@ async function sendEmail({ to, subject, html, from }) {
             });
         });
 
-        req.on('error', reject);
+        req.on('error', (err) => {
+            console.error('❌ Request error:', err);
+            reject(err);
+        });
         req.write(data);
         req.end();
     });

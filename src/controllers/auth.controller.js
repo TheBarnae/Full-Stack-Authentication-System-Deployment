@@ -86,34 +86,46 @@ function resetPasswordSchema(req, res, next) {
 
 async function register(req, res, next) {
     try {
+        console.log(`📝 Registration attempt for: ${req.body.email}`);
+        
         // Check if email already registered
         const existing = await db.Account.findOne({ where: { email: req.body.email } });
         if (existing) {
-            // Don't reveal that email is already registered (security)
+            console.log('⚠️ Email already exists in database.');
             return res.status(200).json({
                 message: 'Registration successful, please check your email for verification instructions'
             });
         }
 
         // Create account
-    const verificationToken = randomTokenString();
-    const account = await db.Account.create({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    passwordHash: await bcrypt.hash(req.body.password, 10),
-    verificationToken: verificationToken,
-    created: new Date(),
-    role: 'User'
-});
+        const verificationToken = randomTokenString();
+        const account = await db.Account.create({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            passwordHash: await bcrypt.hash(req.body.password, 10),
+            verificationToken: verificationToken,
+            created: new Date(),
+            role: 'User'
+        });
+
+        console.log('✅ Account created in Railway. Sending email...');
 
         // Send verification email
-        await sendVerificationEmail(account, req.get('origin'));
+        try {
+            await sendVerificationEmail(account, req.get('origin'));
+            console.log('📧 Email function completed.');
+        } catch (emailErr) {
+            console.error('❌ Failed to send email:', emailErr.message);
+            // We don't want to crash the whole request if email fails, 
+            // but we want to know about it in the terminal!
+        }
 
-res.json({
-    message: 'Registration successful, please check your email for verification instructions'
-});
+        res.json({
+            message: 'Registration successful, please check your email for verification instructions'
+        });
     } catch (err) {
+        console.error('❌ Registration error:', err);
         next(err);
     }
 }
