@@ -12,12 +12,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // CORS — configurable origin from .env
-app.use(cors({
-    origin: function(origin, callback) {
-        callback(null, true);
-    },
+const corsOptions = {
+    origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
     credentials: true
-}));
+};
+app.use(cors(corsOptions));
 
 // ─── Swagger Docs ────────────────────────────────────────
 const swaggerSetup = require('./src/_helpers/swagger');
