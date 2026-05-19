@@ -246,10 +246,12 @@ async function revokeToken(req, res, next) {
 
 async function forgotPassword(req, res, next) {
     try {
+        console.log(`🔑 Forgot password request for: ${req.body.email}`);
         const account = await db.Account.findOne({ where: { email: req.body.email } });
 
         // Always return ok response to prevent email enumeration
         if (!account) {
+            console.log('⚠️ Email not found in DB, but returning success for security.');
             return res.json({ message: 'Please check your email for password reset instructions' });
         }
 
@@ -258,11 +260,19 @@ async function forgotPassword(req, res, next) {
         account.resetTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
         await account.save();
 
+        console.log('✅ Reset token saved. Sending email...');
+
         // Send password reset email
-        await sendPasswordResetEmail(account, req.get('origin'));
+        try {
+            await sendPasswordResetEmail(account, req.get('origin'));
+            console.log('📧 Password reset email sent.');
+        } catch (emailErr) {
+            console.error('❌ Failed to send reset email:', emailErr.message);
+        }
 
         res.json({ message: 'Please check your email for password reset instructions' });
     } catch (err) {
+        console.error('❌ Forgot password error:', err);
         next(err);
     }
 }
