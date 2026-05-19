@@ -13,7 +13,16 @@ app.use(cookieParser());
 
 // CORS — configurable origin from .env
 const corsOptions = {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
+    origin: (origin, callback) => {
+        const allowed = process.env.CORS_ORIGIN || 'http://localhost:4200';
+        // Allow if no origin (like mobile apps or curl) or if it matches our env variable
+        if (!origin || allowed === '*' || allowed === origin) {
+            callback(null, true);
+        } else {
+            console.log(`📡 CORS blocked request from: ${origin}. Allowed: ${allowed}`);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 };
 app.use(cors(corsOptions));
