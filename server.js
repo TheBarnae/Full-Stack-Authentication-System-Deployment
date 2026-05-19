@@ -29,6 +29,11 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 app.use('/api/accounts', require('./src/routes/auth.routes'));
 app.use('/api/accounts', require('./src/routes/users.routes'));
 
+// Fallback for email verification link (if triggered from Swagger/Backend)
+app.get('/account/verify-email', (req, res) => {
+    res.redirect(`/api/accounts/verify-email?token=${req.query.token}`);
+});
+
 // ─── Global Error Handler ────────────────────────────────
 app.use(errorHandler);
 

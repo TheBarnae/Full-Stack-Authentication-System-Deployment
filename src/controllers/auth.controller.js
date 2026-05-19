@@ -132,15 +132,28 @@ async function register(req, res, next) {
 
 async function verifyEmail(req, res, next) {
     try {
+        // Look for token in either body (POST) or query (GET)
+        const token = req.body.token || req.query.token;
+        
         const account = await db.Account.findOne({
-            where: { verificationToken: req.body.token }
+            where: { verificationToken: token }
         });
 
-        if (!account) throw new Error('Verification failed');
+        if (!account) throw new Error('Verification failed - invalid or expired token');
 
         account.verified = new Date();
         account.verificationToken = null;
         await account.save();
+
+        // If it's a GET request (from email link), we can send HTML instead of JSON
+        if (req.method === 'GET') {
+            return res.send(`
+                <div style="font-family: sans-serif; text-align: center; padding: 50px;">
+                    <h1 style="color: #28a745;">✅ Verification Successful!</h1>
+                    <p>Your email has been verified. You can now close this tab and log in.</p>
+                </div>
+            `);
+        }
 
         res.json({ message: 'Verification successful, you can now login' });
     } catch (err) {

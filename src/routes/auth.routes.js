@@ -6,6 +6,7 @@ const authController = require('../controllers/auth.controller');
 // Public routes (no auth required)
 router.post('/register', authController.registerSchema, authController.register);
 router.post('/verify-email', authController.verifyEmailSchema, authController.verifyEmail);
+router.get('/verify-email', authController.verifyEmail); // Added GET support for email links
 router.post('/authenticate', authController.authenticateSchema, authController.authenticate);
 router.post('/refresh-token', authController.refreshToken);
 router.post('/forgot-password', authController.forgotPasswordSchema, authController.forgotPassword);
