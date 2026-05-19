@@ -28,8 +28,10 @@ async function sendEmail({ to, subject, html, from }) {
             res.on('data', (chunk) => body += chunk);
             res.on('end', () => {
                 if (res.statusCode >= 200 && res.statusCode < 300) {
+                    console.log('✅ Email sent successfully via Brevo API');
                     resolve(body);
                 } else {
+                    console.error(`❌ Brevo API error (Status ${res.statusCode}): ${body}`);
                     reject(new Error(`Brevo API error: ${body}`));
                 }
             });
