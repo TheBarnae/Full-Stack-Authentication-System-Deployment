@@ -19,10 +19,13 @@ function errorHandler(err, req, res, next) {
         default:
             // Determine status from error message for known application errors
             const msg = err.message || 'Internal Server Error';
-            const isAuthError = msg.toLowerCase().includes('email or password is incorrect')
-                || msg.toLowerCase().includes('verification failed')
-                || msg.toLowerCase().includes('invalid token')
-                || msg.toLowerCase().includes('no refresh token');
+            const lowerMsg = msg.toLowerCase();
+            const isAuthError = lowerMsg.includes('email or password is incorrect')
+                || lowerMsg.includes('verification failed')
+                || lowerMsg.includes('invalid token')
+                || lowerMsg.includes('no refresh token')
+                || lowerMsg.includes('account not verified')
+                || lowerMsg.includes('invalid or expired token');
             const status = isAuthError ? 400 : 500;
 
             if (status === 500) {

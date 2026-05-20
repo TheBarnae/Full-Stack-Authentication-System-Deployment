@@ -10,6 +10,9 @@ function validateRequest(req, next, schema) {
     const { error, value } = schema.validate(req.body, options);
 
     if (error) {
+        // Log the validation error for debugging
+        console.log(`🔍 Validation failed: ${error.details.map(x => x.message).join(', ')}`);
+        
         // Throw as Joi ValidationError so the error handler catches it with 400 status
         const validationError = new Error(error.details.map(x => x.message).join(', '));
         validationError.name = 'ValidationError';

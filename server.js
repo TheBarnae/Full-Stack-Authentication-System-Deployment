@@ -14,7 +14,7 @@ app.use(cookieParser());
 // CORS — configurable origin from .env
 const corsOptions = {
     origin: (origin, callback) => {
-        const allowed = process.env.CORS_ORIGIN || 'http://localhost:4200';
+        const allowed = process.env.CORS_ORIGIN || 'https://garcia-full-stack-authentication-system.vercel.app';
         // Allow if no origin (like mobile apps or curl) or if it matches our env variable
         if (!origin || allowed === '*' || allowed === origin) {
             callback(null, true);

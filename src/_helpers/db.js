@@ -8,7 +8,13 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT || 3306,
         dialect: 'mysql',
-        logging: false
+        logging: false,
+        dialectOptions: {
+            // Required for some cloud MySQL providers like Aiven or DigitalOcean
+            ssl: process.env.DB_SSL === 'true' ? {
+                rejectUnauthorized: false
+            } : false
+        }
     }
 );
 
