@@ -1,49 +1,37 @@
-# Full-Stack Authentication System
+# ?? Full-Stack Authentication System (Production Deployment)
 
-A high-performance, secure backend API serving as the backbone for the Garcia Full-Stack Authentication System. Built with **Node.js**, **Express**, and **MySQL**, this system implements industry-standard security practices to ensure data integrity and user safety.
+This is a complete, production-ready full-stack authentication system. It features a modern Angular frontend, a robust Node.js/Express backend, and a cloud-hosted MySQL database.
 
-## 🚀 Live Environment
-- **API Base URL:** [https://full-stack-authentication-system-u3yx.onrender.com](https://full-stack-authentication-system-u3yx.onrender.com)
-- **Interactive Docs:** [https://full-stack-authentication-system-u3yx.onrender.com/api-docs](https://full-stack-authentication-system-u3yx.onrender.com/api-docs)
+## ?? Live Demo
+- **Frontend (Vercel):** [https://garcia-full-stack-authentication-system.vercel.app](https://garcia-full-stack-authentication-system.vercel.app)
+- **Backend API (Render):** [https://full-stack-authentication-system-u3yx.onrender.com](https://full-stack-authentication-system-u3yx.onrender.com)
+- **API Documentation:** [Swagger UI](https://full-stack-authentication-system-u3yx.onrender.com/api-docs)
 
-## 🛡️ Key Security Features
-- **JWT & Refresh Tokens:** Secure session management using short-lived access tokens and secure HTTP-only refresh cookies.
-- **RBAC (Role-Based Access Control):** Granular permissions for `Admin` and `User` accounts.
-- **Email Verification:** Required account activation via Brevo API integration.
-- **Password Hashing:** Industry-standard hashing via `bcryptjs`.
-- **CORS Restriction:** Strict origin matching to protect against cross-site attacks.
+## ??? Tech Stack
+*   **Frontend:** Angular 18+, Bootstrap 5, RxJS.
+*   **Backend:** Node.js, Express.js, Sequelize ORM.
+*   **Database:** MySQL (Hosted on **Aiven Cloud** � Free Forever Tier).
+*   **Email Service:** Brevo (formerly Sendinblue) REST API.
+*   **Security:** JWT (JSON Web Tokens) with Refresh Token rotation, HTTP-only Cookies, and Argon2/Bcrypt hashing.
 
-## 🛠️ Technical Stack
-- **Runtime:** Node.js v20+
-- **Framework:** Express.js
-- **Database:** MySQL (Hosted on Railway)
-- **ORM:** Sequelize
-- **Mailing:** Brevo (Sendinblue) API
-- **Documentation:** Swagger / OpenAPI 3.0
+## ? Features
+- [x] **User Registration & Email Verification:** Automated verification emails via Brevo.
+- [x] **Secure Login:** JWT-based authentication with auto-refresh mechanism.
+- [x] **Role-Based Access Control:** Distinct views and permissions for User and Admin.
+- [x] **Password Recovery:** Forgot/Reset password flow with secure token expiration.
+- [x] **User Management:** Full CRUD operations for admins to manage accounts.
+- [x] **Production Hardened:** CORS protection, environment variable management, and SSL-encrypted database connections.
 
-## 📂 Project Structure
-```text
-src/
-├── controllers/    # API Logic & Request Handling
-├── _helpers/        # Database & Email Utilities
-├── middleware/     # Auth Guards & Validation
-├── models/         # Sequelize Data Schemas
-└── routes/         # Express Route Definitions
-```
+## ?? System Architecture
+- **Vercel:** Hosts the Angular SPA with path-based routing rewrites.
+- **Render:** Hosts the Node.js backend with automated continuous deployment from GitHub.
+- **Aiven:** Provides a highly available MySQL instance with SSL enforcement.
 
-## ⚙️ How to Setup (Local)
-1. **Clone & Install:**
-   ```bash
-   npm install
-   ```
-2. **Environment Configuration:**
-   Create a `.env` or update `config.json` with your MySQL credentials and Brevo API key.
-3. **Database Sync:**
-   The app will automatically sync models with the database on startup.
-4. **Launch:**
-   ```bash
-   npm start
-   ```
+## ??? Local Setup
+1. Clone the repository.
+2. Install dependencies: npm install.
+3. Configure your .env file with backend credentials.
+4. Start the server: npm start.
 
 ---
-*Developed as part of the Integrated Programming Finals - Project "SecureAuth"*
+*Developed for the Final Project in Integrated Programming.*
