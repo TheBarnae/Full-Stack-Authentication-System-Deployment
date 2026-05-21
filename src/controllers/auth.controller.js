@@ -97,6 +97,10 @@ async function register(req, res, next) {
             });
         }
 
+        // first registered account is an admin
+        const isFirstAccount = (await db.Account.count()) === 0;
+        const role = isFirstAccount ? 'Admin' : 'User';
+
         // Create account
         const verificationToken = randomTokenString();
         const account = await db.Account.create({
@@ -106,10 +110,10 @@ async function register(req, res, next) {
             passwordHash: await bcrypt.hash(req.body.password, 10),
             verificationToken: verificationToken,
             created: new Date(),
-            role: 'User'
+            role: role
         });
 
-        console.log('✅ Account created in Railway. Sending email...');
+        console.log('✅ Account created in cloud. Sending email...');
 
         // Send verification email
         try {
