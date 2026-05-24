@@ -32,6 +32,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING
         }
     }, {
+        tableName: 'refreshTokens',
         timestamps: false
     });
 
