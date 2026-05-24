@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING
         }
     }, {
-        tableName: 'refreshTokens',
+        tableName: 'nichole_refreshTokens',
         timestamps: false
     });
 

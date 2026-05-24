@@ -50,7 +50,7 @@ module.exports = (sequelize) => {
             type: DataTypes.DATE
         }
     }, {
-        tableName: 'accounts',
+        tableName: 'nichole_accounts',
         timestamps: false,
         defaultScope: {
             // exclude password hash by default
