@@ -98,8 +98,8 @@ async function register(req, res, next) {
         }
 
         // first registered account is an admin
-        // const isFirstAccount = (await db.Account.count()) === 0;
-        // const role = isFirstAccount ? 'Admin' : 'User';
+        const isFirstAccount = (await db.Account.count()) === 0;
+        const role = isFirstAccount ? 'Admin' : 'User';
 
         // Create account
         const verificationToken = randomTokenString();
@@ -110,7 +110,7 @@ async function register(req, res, next) {
             passwordHash: await bcrypt.hash(req.body.password, 10),
             verificationToken: verificationToken,
             created: new Date(),
-            role: 'User' // role
+            role: role
         });
 
         console.log('✅ Account created in cloud. Sending email...');

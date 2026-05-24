@@ -25,8 +25,8 @@ db.Account = require('../models/user.model')(sequelize);
 db.RefreshToken = require('../models/refresh-token.model')(sequelize);
 
 // Relationships
-// db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
-// db.RefreshToken.belongsTo(db.Account);
+db.Account.hasMany(db.RefreshToken, { onDelete: 'CASCADE' });
+db.RefreshToken.belongsTo(db.Account);
 
 // Initialize (sync tables)
 db.initialize = async () => {
@@ -34,12 +34,10 @@ db.initialize = async () => {
         await sequelize.authenticate();
         console.log('✅ MySQL connection established successfully.');
 
-        // Sync models individually to ensure correct order for foreign keys
-        // especially on some shared hosting environments.
-        // await db.Account.sync();
-        // await db.RefreshToken.sync();
+        // Sync models to ensure tables exist with correct schema
+        await sequelize.sync();
         
-        // console.log('✅ Database tables synchronized.');
+        console.log('✅ Database tables synchronized.');
     } catch (error) {
         console.error('❌ Unable to connect to MySQL:', error.message);
         throw error;
