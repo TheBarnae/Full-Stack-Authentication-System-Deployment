@@ -15,10 +15,9 @@ app.use(cookieParser());
 const corsOptions = {
     origin: (origin, callback) => {
         const allowed = process.env.CORS_ORIGIN || 'https://garcia-full-stack-authentication-system.vercel.app';
-        const isVercelPreview = origin && origin.endsWith('.vercel.app');
         
-        // Allow if no origin, matches exact allowed, is a vercel preview, or if allowed is *
-        if (!origin || allowed === '*' || allowed === origin || isVercelPreview) {
+        // Allow if no origin (like mobile apps or curl) or if it matches our env variable
+        if (!origin || allowed === '*' || allowed === origin) {
             callback(null, true);
         } else {
             console.log(`📡 CORS blocked request from: ${origin}. Allowed: ${allowed}`);
